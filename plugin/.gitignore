@@ -1,0 +1,19 @@
+# Composer
+/vendor/
+composer.lock
+
+# Tests
+/tests/.phpunit.result.cache
+/.phpunit.cache/
+
+# Build artifacts
+/dist/
+*.zip
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

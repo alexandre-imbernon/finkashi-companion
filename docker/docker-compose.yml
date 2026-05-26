@@ -1,0 +1,50 @@
+services:
+  wordpress:
+    image: wordpress:7.0-php8.3-apache
+    container_name: finkashi_wp
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: finkashi
+      WORDPRESS_DB_PASSWORD: finkashi_dev_pwd
+      WORDPRESS_DB_NAME: finkashi_db
+      WORDPRESS_DEBUG: 1
+    volumes:
+      - wp_data:/var/www/html
+      - ../plugin:/var/www/html/wp-content/plugins/finkashi-mascot
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:11
+    container_name: finkashi_db
+    environment:
+      MYSQL_DATABASE: finkashi_db
+      MYSQL_USER: finkashi
+      MYSQL_PASSWORD: finkashi_dev_pwd
+      MYSQL_ROOT_PASSWORD: root_dev_pwd
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: finkashi_pma
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root_dev_pwd
+    depends_on:
+      - db
+
+  redis:
+    image: redis:7-alpine
+    container_name: finkashi_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  wp_data:
+  db_data:
