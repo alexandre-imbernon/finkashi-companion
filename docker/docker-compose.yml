@@ -12,7 +12,7 @@ services:
       WORDPRESS_DEBUG: 1
     volumes:
       - wp_data:/var/www/html
-      - ../plugin:/var/www/html/wp-content/plugins/finkashi-mascot
+      - ../plugin:/var/www/html/wp-content/plugins/finkashi-companion
     depends_on:
       - db
 
@@ -44,6 +44,15 @@ services:
     container_name: finkashi_redis
     ports:
       - "6379:6379"
+
+  composer:
+    image: composer:latest
+    container_name: finkashi_composer
+    volumes:
+      - ../plugin:/app
+    working_dir: /app
+    profiles:
+      - tools
 
 volumes:
   wp_data:

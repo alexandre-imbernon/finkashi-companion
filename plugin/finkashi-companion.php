@@ -16,33 +16,49 @@
 
 declare(strict_types=1);
 
-// Empêche un accès direct au fichier (sécurité de base)
+// Prevent direct file access (basic security)
 if (!defined('ABSPATH')) {
     exit;
 }
 
-// Constantes utiles dans tout le plugin
-define('FINKASHI_MASCOT_VERSION', '0.1.0');
-define('FINKASHI_MASCOT_PATH', plugin_dir_path(__FILE__));
-define('FINKASHI_MASCOT_URL', plugin_dir_url(__FILE__));
+// Plugin-wide constants
+define('FINKASHI_COMPANION_VERSION', '0.1.0');
+define('FINKASHI_COMPANION_PATH', plugin_dir_path(__FILE__));
+define('FINKASHI_COMPANION_URL', plugin_dir_url(__FILE__));
 
-// Hook d'activation : appelé une seule fois quand on active le plugin
+// Composer autoloader
+$autoloader = __DIR__ . '/vendor/autoload.php';
+if (!file_exists($autoloader)) {
+    add_action('admin_notices', function (): void {
+        echo '<div class="notice notice-error"><p>';
+        echo '<strong>Finkashi Companion:</strong> Composer dependencies are not installed. ';
+        echo 'Run <code>composer install</code> in the plugin directory.';
+        echo '</p></div>';
+    });
+    return;
+}
+require_once $autoloader;
+
+// Activation hook: runs once when the plugin is activated
 register_activation_hook(__FILE__, function (): void {
-    // Plus tard : créer les tables BDD, options par défaut, etc.
+    // Later: create DB tables, default options, etc.
     flush_rewrite_rules();
 });
 
-// Hook de désactivation : appelé une seule fois quand on désactive le plugin
+// Deactivation hook: runs once when the plugin is deactivated
 register_deactivation_hook(__FILE__, function (): void {
-    // Plus tard : nettoyer les caches, désinscrire les crons
+    // Later: clean caches, unregister crons
     flush_rewrite_rules();
 });
 
-// Petit test visible pour valider que le plugin charge bien
+// Visible test notice to confirm the plugin loads properly
 add_action('admin_notices', function (): void {
     if (get_current_screen()?->id === 'plugins') {
+        $plugin = new \Finkashi\Companion\Plugin(FINKASHI_COMPANION_VERSION);
+
         echo '<div class="notice notice-info is-dismissible">';
-        echo '<p><strong>Finkashi Mascot</strong> is loaded — version ' . esc_html(FINKASHI_MASCOT_VERSION) . '</p>';
+        echo '<p><strong>' . esc_html($plugin->getName()) . '</strong> ';
+        echo 'is loaded — version ' . esc_html($plugin->getVersion()) . '</p>';
         echo '</div>';
     }
 });

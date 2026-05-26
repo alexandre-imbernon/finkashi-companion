@@ -1,0 +1,42 @@
+{
+  "name": "finkashi/companion",
+  "description": "Interactive mascot plugin for Finkashi.fr",
+  "type": "wordpress-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sligou",
+      "homepage": "https://finkashi.fr"
+    }
+  ],
+  "require": {
+    "php": ">=8.2"
+  },
+  "require-dev": {
+    "php-stubs/wordpress-stubs": "^7.0",
+    "phpunit/phpunit": "^11.0",
+    "phpstan/phpstan": "^2.0",
+    "squizlabs/php_codesniffer": "^3.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "Finkashi\\Companion\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Finkashi\\Companion\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true,
+    "process-timeout": 2000
+  },
+  "scripts": {
+    "test": "phpunit",
+    "phpstan": "phpstan analyse",
+    "phpcs": "phpcs --standard=PSR12 src/",
+    "phpcbf": "phpcbf --standard=PSR12 src/"
+  }
+}
