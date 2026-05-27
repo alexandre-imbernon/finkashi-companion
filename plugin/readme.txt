@@ -1,4 +1,5 @@
-=== Finkashi Mascot ===
+=== Finkashi Companion ===
+
 Contributors: Sligou
 Tags: mascot, gamification, interactive, custom
 Requires at least: 7.0
