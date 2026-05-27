@@ -1,10 +1,6 @@
 # Composer
 /vendor/
 
-# Tests
-/tests/.phpunit.result.cache
-/.phpunit.cache/
-
 # Build artifacts
 /dist/
 *.zip
